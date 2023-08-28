@@ -6,7 +6,7 @@
     },
     "provider": {
       "name": "aws",
-      "runtime": "python3.9",
+      "runtime": "python3.10",
       "stage": "dev",
       "region": "us-east-1",
       "versionFunctions": true,
@@ -220,10 +220,10 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/project-walking-app/dev/1693230603513-2023-08-28T13:50:03.513Z/project-walking-app.zip"
+                "S3Key": "serverless/project-walking-app/dev/1693236654646-2023-08-28T15:30:54.646Z/project-walking-app.zip"
               },
               "Handler": "s_api.handler",
-              "Runtime": "python3.9",
+              "Runtime": "python3.10",
               "FunctionName": "project-walking-app-dev-api",
               "MemorySize": 1024,
               "Timeout": 6,
@@ -238,14 +238,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersiontzL41XfGQtxxjlM9Tb6HCMbBdIaU9Q0neZjJcOUevaA": {
+          "ApiLambdaVersionrMXshoRiMW4t6yZyh7eeCDYEr7DOlKXFnvoRW5rk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "FSzMn1bwhvNz6K5nEGwpw6bna02ACRsGjmMzkJqNKrQ="
+              "CodeSha256": "enbe3Da9UujaBM6krsparIrZiSYHZ22bCZbW8+Hc+8g="
             }
           },
           "HttpApi": {
@@ -400,7 +400,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersiontzL41XfGQtxxjlM9Tb6HCMbBdIaU9Q0neZjJcOUevaA"
+              "Ref": "ApiLambdaVersionrMXshoRiMW4t6yZyh7eeCDYEr7DOlKXFnvoRW5rk"
             },
             "Export": {
               "Name": "sls-project-walking-app-dev-ApiLambdaFunctionQualifiedArn"
@@ -554,9 +554,9 @@
         "package": {},
         "memory": 1024,
         "timeout": 6,
-        "runtime": "python3.9",
+        "runtime": "python3.10",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersiontzL41XfGQtxxjlM9Tb6HCMbBdIaU9Q0neZjJcOUevaA"
+        "versionLogicalId": "ApiLambdaVersionrMXshoRiMW4t6yZyh7eeCDYEr7DOlKXFnvoRW5rk"
       }
     },
     "configValidationMode": "warn",
@@ -589,7 +589,7 @@
     "artifact": "C:\\Users\\jjni\\Documents\\GitHub\\project-walking-app\\.serverless\\project-walking-app.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/project-walking-app/dev/1693230603513-2023-08-28T13:50:03.513Z",
+    "artifactDirectoryName": "serverless/project-walking-app/dev/1693236654646-2023-08-28T15:30:54.646Z",
     "artifact": "project-walking-app.zip"
   }
 }
