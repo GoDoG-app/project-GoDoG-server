@@ -2,7 +2,7 @@ from flask import Flask, jsonify, make_response
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
-from resources.posting import PostingListResource, PostingResource
+from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.user import UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
 
 app = Flask(__name__)
@@ -21,7 +21,10 @@ api.add_resource( UserLogoutResource , '/user/logout')
 
 api.add_resource( PostingListResource , "/posting") # 게시물 작성
 api.add_resource( PostingResource , '/posting/<int:posting_id>') # 게시물 수정,삭제
-
+api.add_resource( PostingAllListResource , "/posting/list") # 전체 게시물 가져오기
+api.add_resource( PostingCategoryListResource, "/posting/category/<int:category_id>") # 카테고리별 게시물 가져오기
+api.add_resource( MyPostListResource , "/posting/mylist") # 내 게시물 가져오기
+api.add_resource( UserPostListResource , "/posting/<int:another_user_id>/list") # 특정유저 게시물 가져오기
 
 if __name__ == '__main__':
     app.run()

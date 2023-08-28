@@ -167,3 +167,259 @@ class PostingResource(Resource):
             return {'result' : 'fail', 'error':str(e)},500
         
         return {'result':'success'}
+
+class PostingAllListResource(Resource) :
+    
+    @jwt_required()
+    def get(self):
+        
+        user_id = get_jwt_identity()
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+
+        try:
+            connection = get_connection()
+            query = '''SELECT
+                        p.userId as post_userid,
+                        p.id AS post_id,
+                        u.nickname AS user_nickname,
+                        u.proImgUrl AS user_profile_image,
+                        r.address AS user_region,
+                        p.postContent,
+                        p.postImgUrl,
+                        if ( pl.id is null , 0, 1) as isLike,
+                        pc.categoryName as category,
+                        (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
+                        p.createdAt,
+                        p.updatedAt
+                    FROM
+                        posting p
+                    JOIN
+                        user u ON p.userId = u.id
+                    JOIN
+                        region r ON u.id = r.userId
+                    left join postLikes pl
+                        on pl.userId = %s and p.id = pl.postId
+                    join postCategory pc
+                        on p.postCategoryId = pc.id
+                    order by p.createdAt desc
+                    limit '''+offset+''','''+limit+''';'''
+            record = (user_id,)
+
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            print(result_list)
+
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(e)
+            return {'result':'fail','error':str(e)},500
+
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+            i = i + 1
+        
+        return {'result' : 'success',
+                'count' : len(result_list),
+                'items' : result_list}
+    
+# 카테고리별 게시물 가져오기
+class PostingCategoryListResource(Resource):
+
+    @jwt_required()
+    def get(self, category_id):
+
+        user_id = get_jwt_identity()
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+
+        try:
+            
+            connection = get_connection()
+            query = '''SELECT
+                        p.userId as post_userid,
+                        p.id AS post_id,
+                        u.nickname AS user_nickname,
+                        u.proImgUrl AS user_profile_image,
+                        r.address AS user_region,
+                        p.postContent,
+                        p.postImgUrl,
+                        if ( pl.id is null , 0, 1) as isLike,
+                        pc.categoryName as category,
+                        (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
+                        p.createdAt,
+                        p.updatedAt
+                    FROM
+                        posting p
+                    JOIN
+                        user u ON p.userId = u.id
+                    JOIN
+                        region r ON u.id = r.userId
+                    left join postLikes pl
+                        on pl.userId = %s and p.id = pl.postId
+                    join postCategory pc
+                        on p.postCategoryId = pc.id
+                    where pc.id = %s
+                    order by p.createdAt desc
+                    limit '''+offset+''','''+limit+''';'''
+            record = (user_id,category_id)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            print(result_list)
+
+            cursor.close()
+            connection.close()
+
+        except Exception as e:
+            print(e)
+            return {'result':'fail','error':str(e)}, 400
+        
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+            i = i + 1
+        
+        return {'result' : 'success',
+                'count' : len(result_list),
+                'items' : result_list}
+    
+
+# 특정 유저의 게시물 가져오기
+class UserPostListResource(Resource):
+
+    @jwt_required()
+    def get(self,another_user_id):
+
+        user_id = get_jwt_identity()
+        
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+
+        try:
+            connection = get_connection()
+            query = '''SELECT
+                        p.userId as post_userid,
+                        p.id AS post_id,
+                        u.nickname AS user_nickname,
+                        u.proImgUrl AS user_profile_image,
+                        r.address AS user_region,
+                        p.postContent,
+                        p.postImgUrl,
+                        if ( pl.id is null , 0, 1) as isLike,
+                        pc.categoryName as category,
+                        (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
+                        p.createdAt,
+                        p.updatedAt
+                    FROM
+                        posting p
+                    JOIN
+                        user u ON p.userId = u.id
+                    JOIN
+                        region r ON u.id = r.userId
+                    left join postLikes pl
+                        on pl.userId = %s and p.id = pl.postId
+                    join postCategory pc
+                        on p.postCategoryId = pc.id
+                    where u.id = %s
+                    order by p.createdAt desc
+                    limit '''+offset+''','''+limit+''';'''
+            record = (user_id,another_user_id,)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            print(result_list)
+
+            cursor.close()
+            connection.close()
+
+        except Exception as e:
+            print(e)
+            return {'result':'fail','error':str(e)}, 400
+        
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+            i = i + 1
+        
+        return {'result' : 'success',
+                'count' : len(result_list),
+                'items' : result_list}
+
+
+# 내 게시물 가져오기
+class MyPostListResource(Resource):
+
+    @jwt_required()
+    def get(self):
+
+        user_id = get_jwt_identity()
+
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+
+        try:
+            connection = get_connection()
+            query = '''SELECT
+                        p.userId as post_userid,
+                        p.id AS post_id,
+                        u.nickname AS user_nickname,
+                        u.proImgUrl AS user_profile_image,
+                        r.address AS user_region,
+                        p.postContent,
+                        p.postImgUrl,
+                        if ( pl.id is null , 0, 1) as isLike,
+                        pc.categoryName as category,
+                        (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
+                        p.createdAt,
+                        p.updatedAt
+                    FROM
+                        posting p
+                    JOIN
+                        user u ON p.userId = u.id
+                    JOIN
+                        region r ON u.id = r.userId
+                    left join postLikes pl
+                        on pl.userId = %s and p.id = pl.postId
+                    join postCategory pc
+                        on p.postCategoryId = pc.id
+                    where u.id = %s
+                    order by p.createdAt desc
+                    limit '''+offset+''','''+limit+''';'''
+            record = (user_id,user_id,)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            print(result_list)
+
+            cursor.close()
+            connection.close()
+
+        except Exception as e:
+            print(e)
+            return {'result':'fail','error':str(e)}, 400
+        
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+            i = i + 1
+        
+        return {'result' : 'success',
+                'count' : len(result_list),
+                'items' : result_list}
