@@ -2,6 +2,7 @@ from flask import Flask, jsonify, make_response
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
+from follow import FollowListResource, FollowResource
 from resources.pet import MyPetListResource, PetRegisterResource, PetResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.user import UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
@@ -33,6 +34,9 @@ api.add_resource( PostingAllListResource , "/posting/list") # 전체 게시물 �
 api.add_resource( PostingCategoryListResource, "/posting/category/<int:category_id>") # 카테고리별 게시물 가져오기
 api.add_resource( MyPostListResource , "/posting/mylist") # 내 게시물 가져오기
 api.add_resource( UserPostListResource , "/posting/<int:another_user_id>/list") # 특정유저 게시물 가져오기
+
+api.add_resource( FollowListResource , "/followlist") # 내 친구목록 가져오기
+api.add_resource( FollowResource , '/follow/<int:followee_id>') # 친구맺기,끊기
 
 
 
