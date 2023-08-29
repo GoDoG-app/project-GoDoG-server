@@ -195,14 +195,19 @@ class UserKakaoLoginResource(Resource):
     def post(self):
         try:
             data = request.get_json()
-            kakao_token = data.get('kakaoToken')  # 클라이언트에서 'kakaoToken'으로 전송
 
-            # 받아온 토큰을 사용하거나 처리할 작업을 수행
-            # 이 부분에서 토큰을 확인하고 필요한 작업을 수행합니다.
+            if data is not None:
+                kakao_token = data.get('kakaoToken')  # 클라이언트에서 'kakaoToken'으로 전송
 
-            # 예: 받아온 토큰을 그대로 응답
-            response_data = {'message': 'Kakao Token received successfully', 'kakaoToken': kakao_token}  # 서버에서 'kakaoToken'으로 응답
+                # 받아온 토큰을 사용하거나 처리할 작업을 수행
+                # 이 부분에서 토큰을 확인하고 필요한 작업을 수행합니다.
 
-            return response_data, 200
+                # 예: 받아온 토큰을 그대로 응답
+                response_data = {'message': 'Kakao Token received successfully', 'kakaoToken': kakao_token}  # 서버에서 'kakaoToken'으로 응답
+
+                return response_data, 200
+            else:
+                return {'message': 'Error', 'error': 'No data received'}, 400  # 클라이언트로부터 데이터가 없을 때 에러 응답
+
         except Exception as e:
             return {'message': 'Error', 'error': str(e)}, 500
