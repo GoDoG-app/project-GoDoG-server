@@ -190,14 +190,18 @@ class UserLoginResource(Resource) :
 
         return {'result' : 'success', 'access_token':access_token}
     
-class UserKakaoLoginResource(Resource) : 
-        def post(self):
-            try:                
-                data = request.get_json()
-                kakao_token = data.get('userKakaoToken')
+class UserKakaoLoginResource(Resource):
+    def post(self):
+        try:
+            data = request.get_json()
+            kakao_token = data.get('kakaoToken')  # 클라이언트에서 'kakaoToken'으로 전송
 
-                response_data = {'message': 'Kakao Token received successfully', 'accessToken': kakao_token}
+            # 받아온 토큰을 사용하거나 처리할 작업을 수행
+            # 이 부분에서 토큰을 확인하고 필요한 작업을 수행합니다.
 
-                return jsonify(response_data), 200
-            except Exception as e:
-                return jsonify({'message': 'Error', 'error': str(e)}), 500
+            # 예: 받아온 토큰을 그대로 응답
+            response_data = {'message': 'Kakao Token received successfully', 'kakaoToken': kakao_token}  # 서버에서 'kakaoToken'으로 응답
+
+            return jsonify(response_data), 200
+        except Exception as e:
+            return jsonify({'message': 'Error', 'error': str(e)}), 500
