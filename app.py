@@ -2,7 +2,7 @@ from flask import Flask, jsonify, make_response
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
-from follow import FollowListResource, FollowResource
+from resources.follow import FollowListResource, FollowResource
 from resources.pet import MyPetListResource, PetRegisterResource, PetResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.user import UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
