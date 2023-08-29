@@ -213,36 +213,37 @@ class UserLoginResource(Resource) :
 #         except Exception as e:
 #             return {'message': 'Error', 'error': str(e)}, 500
 
-class UserKakaoLoginResource(Resource):
-    def post(self):
-        try:
-            data = request.get_json()
+# class UserKakaoLoginResource(Resource):
+#     def post(self):
+#         try:
+#             data = request.get_json()
 
-            if data is not None:
-                kakao_token = data.get('kakaoToken')  # 클라이언트에서 'kakaoToken'으로 전송
+#             if data is not None:
+#                 print(kakao_token)
+#                 kakao_token = data.get('kakaoToken')  # 클라이언트에서 'kakaoToken'으로 전송
 
-                # Kakao API 호출
-                kakao_api_url = "https://kapi.kakao.com/v2/user/me"
-                headers = {"Authorization": f"Bearer {kakao_token}"}
-                response = requests.get(kakao_api_url, headers=headers)
+#                 # Kakao API 호출
+#                 kakao_api_url = "https://kapi.kakao.com/v2/user/me"
+#                 headers = {"Authorization": f"Bearer {kakao_token}"}
+#                 response = requests.get(kakao_api_url, headers=headers)
 
-                if response.status_code == 200:
-                    # Kakao API 호출 성공
-                    kakao_response_data = response.json()
-                    # 이제 kakao_response_data를 처리하거나 반환할 데이터에 추가할 수 있습니다.
+#                 if response.status_code == 200:
+#                     # Kakao API 호출 성공
+#                     kakao_response_data = response.json()
+#                     # 이제 kakao_response_data를 처리하거나 반환할 데이터에 추가할 수 있습니다.
                     
-                    # 예: 받아온 토큰과 Kakao API 응답을 함께 응답
-                    response_data = {
-                        'message': 'Kakao Token received successfully',
-                        'kakaoToken': kakao_token,
-                        'kakaoUserData': kakao_response_data
-                    }
-                    return response_data, 200
-                else:
-                    # Kakao API 호출 실패
-                    return {'message': 'Error', 'error': 'Failed to fetch Kakao user data'}, 500
-            else:
-                return {'message': 'Error', 'error': 'No data received'}, 400  # 클라이언트로부터 데이터가 없을 때 에러 응답
+#                     # 예: 받아온 토큰과 Kakao API 응답을 함께 응답
+#                     response_data = {
+#                         'message': 'Kakao Token received successfully',
+#                         'kakaoToken': kakao_token,
+#                         'kakaoUserData': kakao_response_data
+#                     }
+#                     return response_data, 200
+#                 else:
+#                     # Kakao API 호출 실패
+#                     return {'message': 'Error', 'error': 'Failed to fetch Kakao user data'}, 500
+#             else:
+#                 return {'message': 'Error', 'error': 'No data received'}, 400  # 클라이언트로부터 데이터가 없을 때 에러 응답
 
-        except Exception as e:
-            return {'message': 'Error', 'error': str(e)}, 500
+#         except Exception as e:
+#             return {'message': 'Error', 'error': str(e)}, 500
