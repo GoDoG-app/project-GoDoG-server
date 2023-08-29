@@ -191,7 +191,7 @@ class UserLoginResource(Resource) :
         return {'result' : 'success', 'access_token':access_token}
     
 class UserKakaoLoginResource(Resource) : 
-        def receive_kakao_token():
+        def post(self):
             try:                
                 data = request.get_json()
                 kakao_token = data.get('userKakaoToken')
