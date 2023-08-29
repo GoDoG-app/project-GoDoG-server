@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import redirect, request
+from flask import jsonify, redirect, request
 import mysql.connector
 from mysql.connector import Error
 from config import Config
@@ -189,3 +189,15 @@ class UserLoginResource(Resource) :
         user_name = result_list[0]['nickname']
 
         return {'result' : 'success', 'access_token':access_token}
+    
+class UserKakaoLoginResource(Resource) : 
+        def receive_kakao_token():
+            try:                
+                data = request.get_json()
+                kakao_token = data.get('userKakaoToken')
+
+                response_data = {'message': 'Kakao Token received successfully', 'accessToken': kakao_token}
+
+                return jsonify(response_data), 200
+            except Exception as e:
+                return jsonify({'message': 'Error', 'error': str(e)}), 500
