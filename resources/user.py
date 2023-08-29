@@ -1,3 +1,4 @@
+import json
 from flask_restful import Resource
 from flask import jsonify, redirect, request
 import mysql.connector
@@ -202,6 +203,6 @@ class UserKakaoLoginResource(Resource):
             # 예: 받아온 토큰을 그대로 응답
             response_data = {'message': 'Kakao Token received successfully', 'kakaoToken': kakao_token}  # 서버에서 'kakaoToken'으로 응답
 
-            return jsonify(response_data), 200
+            return json.dumps(response_data), 200
         except Exception as e:
-            return jsonify({'message': 'Error', 'error': str(e)}), 500
+            return json.dumps({'message': 'Error', 'error': str(e)}), 500
