@@ -11,5 +11,5 @@ email-validator
 requests==2.25.0
 
 
-firebase-admin
+firebase_admin
 google-cloud-firestore
