@@ -1,7 +1,9 @@
+import json
 from flask_restful import Resource
 from flask import jsonify, redirect, request
 import mysql.connector
 from mysql.connector import Error
+import requests
 from config import Config
 from mysql_connection import get_connection
 from email_validator import validate_email, EmailNotValidError
@@ -187,5 +189,6 @@ class UserLoginResource(Resource) :
         # 4. 클라이언트에게 데이터를 보내준다.
         access_token = create_access_token(result_list[0]['id'])
         user_name = result_list[0]['nickname']
+
 
         return {'result' : 'success', 'access_token':access_token}
