@@ -6,7 +6,7 @@ from resources.follow import FollowListResource, FollowResource
 from resources.pet import MyPetListResource, PetRegisterResource, PetResource
 from resources.postLike import PostingLikeResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
-from resources.user import UserKakaoLoginResource, UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
+from resources.user import UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
 
 app = Flask(__name__)
 
@@ -21,10 +21,12 @@ def check_if_token_is_revoked(jwt_header, jwt_payload) :
 
 api = Api(app)
 
+app.config["JWT_SECRET_KEY"] = "super-secret"
+
 api.add_resource( UserRegisterResource , '/user/register') 
 api.add_resource( UserLoginResource , '/user/login' )
 api.add_resource( UserLogoutResource , '/user/logout')
-api.add_resource( UserKakaoLoginResource, '/user/kakao/oauth') # 카카오 토큰 발급
+
 
 api.add_resource( PetRegisterResource, '/pet/register') # 펫 등록
 api.add_resource( PetResource , "/pet/<int:pets_id>" ) # 펫 정보변경,삭제
