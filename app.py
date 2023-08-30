@@ -2,6 +2,10 @@ from flask import Flask, jsonify, make_response
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
+from resources.chat import ChatRoomListResource, CreateChatRoomResource, SendMessageResource
+from resources.cocommentLike import CocommentLikeResource
+from resources.cocomments import CocomentsResource, CocommentsUDResource
+from resources.commentLike import CommentLikeResource
 from resources.comments import CommentsResource, CommentsUDResource
 from resources.follow import FollowListResource, FollowResource
 from resources.pet import MyPetListResource, PetRegisterResource, PetResource
@@ -54,6 +58,14 @@ api.add_resource( FollowResource , '/follow/<int:followee_id>') # 친구맺기,�
 
 api.add_resource( CommentsResource ,"/addcomment/<int:posting_id>") # 댓글 작성
 api.add_resource( CommentsUDResource ,"/comment/<int:posting_id>/<comment_id>") # 댓글 수정,삭제
+api.add_resource( CommentLikeResource ,"/commentlike/<int:posting_id>/<comment_id>") # 댓글 좋아요,취소
+api.add_resource( CocomentsResource ,"/addcocomment/<int:posting_id>/<comment_id>") # 대댓글 작성
+api.add_resource( CocommentsUDResource ,"/cocomment/<int:posting_id>/<comment_id>/<cocomment_id>") # 대댓글 수정,삭제
+api.add_resource( CocommentLikeResource ,"/cocommentlike/<int:posting_id>/<comment_id>/<cocomment_id>") # 대댓글 좋아요,취소
+
+api.add_resource( CreateChatRoomResource , "/createchatroom") # 채팅방 생성
+api.add_resource( SendMessageResource ,"/sendmessage") # 채팅 보내기
+api.add_resource( ChatRoomListResource ,"/chatroomlist") # 채팅방 목록 가져오기
 
 
 
