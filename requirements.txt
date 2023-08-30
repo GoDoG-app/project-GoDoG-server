@@ -9,3 +9,7 @@ passlib
 Flask-JWT-Extended
 email-validator
 requests==2.25.0
+
+
+firebase-admin
+google-cloud-firestore
