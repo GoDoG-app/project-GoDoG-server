@@ -2,11 +2,14 @@ from flask import Flask, jsonify, make_response
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
+from resources.comments import CommentsResource
 from resources.follow import FollowListResource, FollowResource
 from resources.pet import MyPetListResource, PetRegisterResource, PetResource
 from resources.postLike import PostingLikeResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.user import UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
+
+from firebase_admin import credentials, initialize_app
 
 app = Flask(__name__)
 
@@ -18,6 +21,11 @@ jwt = JWTManager(app)
 def check_if_token_is_revoked(jwt_header, jwt_payload) :
     jti = jwt_payload['jti']
     return jti in jwt_blocklist
+
+# Firebase 초기화
+cred = credentials.Certificate("serviceAccountKey.json")
+initialize_app(cred)
+
 
 api = Api(app)
 
@@ -43,6 +51,8 @@ api.add_resource( PostingLikeResource ,"/post/<int:posting_id>/like") # 게시�
 
 api.add_resource( FollowListResource , "/followlist") # 내 친구목록 가져오기
 api.add_resource( FollowResource , '/follow/<int:followee_id>') # 친구맺기,끊기
+
+api.add_resource( CommentsResource ,"/addcomment/<int:posting_id>") # 댓글 작성
 
 
 
