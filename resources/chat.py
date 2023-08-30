@@ -90,12 +90,13 @@ class CreateChatRoomResource(Resource):
             data = request.get_json()
             sender_id = get_jwt_identity()
             receiver_id = data['user_id']
-            # room_id = str(uuid.uuid4) # 유저 ID로 채팅방 ID 생성
 
-            # # 이미 존재하는 방인지 확인하고, 없으면 생성
-            # chat_ref = self.db.collection('chat_rooms').document(room_id)
-            # if not chat_ref.get().exists:
-            #     chat_ref.set({})  # 채팅방 생성
+
+            # 이미 존재하는 방인지 확인
+            existing_room = self.find_existing_room(sender_id, receiver_id)
+
+            if existing_room:
+                return {'result': 'success', 'room_id': existing_room}
 
             # 파이어베이스에서 생성되는 고유 ID로 채팅방 생성
             chat_ref = self.db.collection('chat_rooms').document()
@@ -113,6 +114,26 @@ class CreateChatRoomResource(Resource):
         except Exception as e:
             print(e)
             return {'result':'fail','error':str(e)}, 400
+        
+    def find_existing_room(self, sender_id, receiver_id):
+        chat_rooms_ref = self.db.collection('chat_rooms')
+
+        # Sender의 채팅방 목록 쿼리
+        query_sender = chat_rooms_ref.where('users', 'array_contains', sender_id)
+        chat_rooms_sender = query_sender.stream()
+
+        # Receiver의 채팅방 목록 쿼리
+        query_receiver = chat_rooms_ref.where('users', 'array_contains', receiver_id)
+        chat_rooms_receiver = query_receiver.stream()
+
+        # 이미 존재하는 방을 찾기 위해 두 개의 쿼리 결과를 비교
+        for chat_room in chat_rooms_sender:
+            room_id = chat_room.id
+            # Sender의 채팅방이 Receiver의 채팅방 목록에도 있는지 확인
+            if room_id in [room.id for room in chat_rooms_receiver]:
+                return room_id  # 이미 존재하는 방의 ID 반환
+
+        return None  # 이미 존재하는 방이 없으면 None 반환
 
 
 

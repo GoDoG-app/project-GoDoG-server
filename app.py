@@ -33,7 +33,6 @@ initialize_app(cred)
 
 api = Api(app)
 
-app.config["JWT_SECRET_KEY"] = "super-secret"
 
 api.add_resource( UserRegisterResource , '/user/register') 
 api.add_resource( UserLoginResource , '/user/login' )
