@@ -10,7 +10,7 @@ class Config():
 
         # JWT 환경 변수 셋팅
     JWT_SECRET_KEY = 'hello~!by@13##hello'
-    JWT_ACCESS_TOKEN_EXPIRSE = False
+    JWT_ACCESS_TOKEN_EXPIRES = False
     PROPAGATE_EXCEPTIONS = True
 
     AWS_ACCESS_KEY_ID = 'AKIAQ5336DFWLDN3FM4J'
