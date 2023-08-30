@@ -10,6 +10,8 @@ Flask-JWT-Extended
 email-validator
 requests==2.25.0
 
+cryptography==3.4.8
+
 firebase-admin
 firebase_admin
 google-cloud-firestore
