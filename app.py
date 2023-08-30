@@ -2,7 +2,7 @@ from flask import Flask, jsonify, make_response
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
-from resources.comments import CommentsResource
+from resources.comments import CommentsResource, CommentsUDResource
 from resources.follow import FollowListResource, FollowResource
 from resources.pet import MyPetListResource, PetRegisterResource, PetResource
 from resources.postLike import PostingLikeResource
@@ -53,6 +53,7 @@ api.add_resource( FollowListResource , "/followlist") # 내 친구목록 가져�
 api.add_resource( FollowResource , '/follow/<int:followee_id>') # 친구맺기,끊기
 
 api.add_resource( CommentsResource ,"/addcomment/<int:posting_id>") # 댓글 작성
+api.add_resource( CommentsUDResource ,"/comment/<int:posting_id>/<comment_id>") # 댓글 수정,삭제
 
 
 
