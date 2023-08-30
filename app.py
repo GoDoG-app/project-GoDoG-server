@@ -21,6 +21,8 @@ def check_if_token_is_revoked(jwt_header, jwt_payload) :
 
 api = Api(app)
 
+app.config["JWT_SECRET_KEY"] = "super-secret"
+
 api.add_resource( UserRegisterResource , '/user/register') 
 api.add_resource( UserLoginResource , '/user/login' )
 api.add_resource( UserLogoutResource , '/user/logout')

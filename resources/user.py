@@ -190,5 +190,5 @@ class UserLoginResource(Resource) :
         access_token = create_access_token(result_list[0]['id'])
         user_name = result_list[0]['nickname']
 
+
         return {'result' : 'success', 'access_token':access_token}
-    
