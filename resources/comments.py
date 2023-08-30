@@ -45,6 +45,34 @@ class CommentsUDResource(Resource):
 
         except Exception as e:
             return {'result':'fail','error': str(e)}, 400
+    
+    # 삭제
+    @jwt_required()
+    def delete(self,posting_id,comment_id):
+
+        self.db = firestore.client()
+
+        try:
+            user_id = get_jwt_identity()
+
+             # 댓글 삭제 전에 작성자 확인
+            comment_ref = self.db.collection('post_comments').document(str(posting_id)).collection('comments').document(comment_id)
+            comment = comment_ref.get()
+            if comment.exists: # 댓글 문서가 있으면 아래코드 실행
+                comment_author_id = comment.get('user_id')
+                if comment_author_id == user_id:
+                    comment_ref.delete()  # 댓글 삭제
+                    return {'result': 'success'}
+                else:
+                    return {'error': '댓글을 삭제할 권한이 없습니다.'}, 403
+            else:
+                return {'error': '댓글을 찾을 수 없습니다.'}, 404
+
+        except Exception as e:
+            print(e)
+            return {'result':'fail','error':str(e)}, 400
+        
+        
         
         
 
