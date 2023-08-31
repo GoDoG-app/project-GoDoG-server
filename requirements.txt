@@ -15,3 +15,5 @@ cryptography==3.4.8
 firebase-admin
 firebase_admin
 google-cloud-firestore
+
+geopy
