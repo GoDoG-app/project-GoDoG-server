@@ -18,3 +18,5 @@ class Config():
 
     S3_BUCKET = 'project4-walking-app'
     S3_BASE_URL = 'https://'+S3_BUCKET+'.s3.amazonaws.com/'
+
+    TMAP_APP_KEY = "e8wHh2tya84M88aReEpXCa5XTQf3xgo01aZG39k5"
