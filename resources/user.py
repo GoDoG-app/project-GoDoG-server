@@ -25,6 +25,8 @@ class MyProfileResource(Resource):
                             u.email as userEmail,
                             u.nickname as userNickname,
                             u.birth as userBirth,
+                            u.gender as userGender,
+                            r.address as userAddress,
                             u.oneliner as userOneliner,
                             u.auth as userAuth,
                             u.proImgUrl as userProUrl,
@@ -38,6 +40,8 @@ class MyProfileResource(Resource):
                     from user u
                     join pets p
                         on u.id = p.userId
+                    join region r
+                        on u.id = r.userId
                     where u.id = %s;'''
             record = (user_id,)
 
