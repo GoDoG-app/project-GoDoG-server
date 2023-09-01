@@ -8,7 +8,64 @@ from config import Config
 from mysql_connection import get_connection
 from email_validator import validate_email, EmailNotValidError
 from utils import check_password, hash_password
-from flask_jwt_extended import create_access_token, get_jwt, jwt_required
+from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, jwt_required
+
+
+# 내 프로필
+class MyProfileResource(Resource):
+
+    @jwt_required()
+    def get(self):
+
+        user_id = get_jwt_identity()
+
+        try:
+            connection = get_connection()
+            query = '''select u.id,
+                            u.email as userEmail,
+                            u.nickname as userNickname,
+                            u.birth as userBirth,
+                            u.oneliner as userOneliner,
+                            u.auth as userAuth,
+                            u.proImgUrl as userProUrl,
+                            u.loginType as userLoginType,
+                            p.id as petId,
+                            p.petName as petName,
+                            p.petAge as petAge,
+                            p.petGender as petGender,
+                            p.oneliner as petOneliner,
+                            p.petProUrl as petProUrl
+                    from user u
+                    join pets p
+                        on u.id = p.userId
+                    where u.id = %s;'''
+            record = (user_id,)
+
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            print(result_list)
+
+            cursor.close()
+            connection.close()
+
+
+        except Exception as e:
+            print(e)
+            return{'result':'fail','error':str(e)}, 400
+        
+        i = 0
+        for row in result_list:
+            result_list[i]['userBirth'] = row['userBirth'].isoformat()
+            i = i + 1
+        
+        return {'result' : 'success',
+                'count' : len(result_list),
+                'items' : result_list}
+
+
 
 
 # 로그아웃
