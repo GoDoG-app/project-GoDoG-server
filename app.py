@@ -12,7 +12,7 @@ from resources.pet import MyPetListResource, PetRegisterResource, PetResource
 from resources.postLike import PostingLikeResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.randomFriend import RandomFriendResource
-from resources.user import UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
+from resources.user import MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
 
 from firebase_admin import credentials, initialize_app
 
@@ -68,6 +68,8 @@ api.add_resource( SendMessageResource ,"/sendmessage") # 채팅 보내기
 api.add_resource( ChatRoomListResource ,"/chatroomlist") # 채팅방 목록 가져오기
 
 api.add_resource( RandomFriendResource, "/randomfriend/list") # 랜덤친구 추천
+
+api.add_resource( MyProfileResource ,"/user/profile") # 내 프로필
 
 if __name__ == '__main__':
     app.run()
