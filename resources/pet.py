@@ -24,6 +24,7 @@ class PetRegisterResource(Resource):
         petName = request.form['petName']
         petAge = request.form['petAge']
         petGender = request.form['petGender']
+        petOneliner = request.form['petOneliner']
 
         if 'photo' in request.files :
 
@@ -57,10 +58,10 @@ class PetRegisterResource(Resource):
             try:
                 connection = get_connection()
                 query = '''insert into pets
-                        (userId,petName,petAge,petGender,petProUrl)
+                        (userId,petName,petAge,petGender,petProUrl,oneliner)
                         values
-                        (%s,%s,%s,%s,%s);'''
-                record = (user_id,petName,petAge,petGender,petProUrl)
+                        (%s,%s,%s,%s,%s,%s);'''
+                record = (user_id,petName,petAge,petGender,petProUrl,petOneliner)
 
                 cursor = connection.cursor()
                 cursor.execute(query, record)
@@ -81,10 +82,10 @@ class PetRegisterResource(Resource):
 
                 connection = get_connection()
                 query = '''insert into pets
-                        (userId,petName,petAge,petGender)
+                        (userId,petName,petAge,petGender,oneliner)
                         values
                         (%s,%s,%s,%s);'''
-                record = (user_id,petName,petAge,petGender)
+                record = (user_id,petName,petAge,petGender,petOneliner)
 
                 cursor = connection.cursor()
                 cursor.execute(query, record)
@@ -105,14 +106,18 @@ class PetResource(Resource):
 
     # 펫 정보변경
     @jwt_required()
-    def put(self, pets_id):
+    def put(self):
 
         user_id = get_jwt_identity()
 
-        if 'petName' not in request.form:
+        if 'petName' not in request.form or 'petAge' not in request.form or 'petGender' not in request.form:
             return {'result' : 'fail', 'error' : '필수항목 확인'},400
         
         petName = request.form['petName']
+        petAge = request.form['petAge']
+        petGender = request.form['petGender']
+        petOneliner = request.form['petOneliner']
+
 
         if 'photo' in request.files :
 
@@ -146,9 +151,9 @@ class PetResource(Resource):
             try:
                 connection = get_connection()
                 query = '''update pets
-                        set petName = %s, petProUrl = %s
-                        where userId = %s and id = %s;'''
-                record = (petName,petProUrl,user_id,pets_id)
+                        set petName = %s, petAge = %s, petGender = %s, petProUrl = %s, oneliner = %s
+                        where userId = %s;'''
+                record = (petName,petAge,petGender,petProUrl,petOneliner,user_id)
                 cursor = connection.cursor()
                 cursor.execute(query,record)
                 connection.commit()
@@ -166,9 +171,9 @@ class PetResource(Resource):
             try:
                 connection = get_connection()
                 query = '''update pets
-                        set petName = %s
-                        where userId = %s and id = %s;'''
-                record = (petName,user_id,pets_id)
+                        set petName = %s, petAge = %s, petGender = %s, oneliner = %s
+                        where userId = %s;'''
+                record = (petName,petAge,petGender,petOneliner,user_id)
                 cursor = connection.cursor()
                 cursor.execute(query,record)
                 connection.commit()
@@ -185,15 +190,15 @@ class PetResource(Resource):
 
     # 펫 삭제
     @jwt_required()
-    def delete(self,pets_id):
+    def delete(self):
         
         user_id = get_jwt_identity()
 
         try:
             connection = get_connection()
             query = '''delete from pets
-                    where userId = %s and id = %s;'''
-            record = (user_id, pets_id)
+                        where userId = %s;'''
+            record = (user_id,)
             cursor = connection.cursor()
             cursor.execute(query,record)
             connection.commit()
@@ -207,8 +212,8 @@ class PetResource(Resource):
 
         return {'result':'success'}
 
-# 내 펫 리스트
-class MyPetListResource(Resource):
+# 내 펫 정보
+class MyPetInfoResource(Resource):
 
     @jwt_required()
     def get(self):
@@ -218,9 +223,8 @@ class MyPetListResource(Resource):
         try:
             connection = get_connection()
             query = '''select *
-                    from pets
-                    where userId = %s
-                    order by createdAt desc;'''
+                        from pets
+                        where userId = %s;'''
             record = (user_id,)
             cursor = connection.cursor(dictionary=True)
             cursor.execute(query, record)
@@ -244,5 +248,4 @@ class MyPetListResource(Resource):
             i = i + 1
         
         return {'result' : 'success',
-                'count' : len(result_list),
                 'items' : result_list}
