@@ -50,7 +50,7 @@ api.add_resource( RandomFriendResource, "/randomfriend/list") # 랜덤친구 추
 
 api.add_resource( TMapRouteResource, "/route") # tmap 보행자경로 api
 
-api.add_resource( MyProfileResource ,"/user/profile") # 내 프로필
+api.add_resource( MyProfileResource ,"/user/profile") # 내 정보, 수정
 
 if __name__ == '__main__':
     app.run()

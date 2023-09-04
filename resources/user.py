@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from flask_restful import Resource
 from flask import jsonify, redirect, request
@@ -11,9 +12,12 @@ from utils import check_password, hash_password
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, jwt_required
 
 
-# 내 프로필
+import boto3
+
+# 내 정보, 수정
 class MyProfileResource(Resource):
 
+    # 내 정보
     @jwt_required()
     def get(self):
 
@@ -24,22 +28,14 @@ class MyProfileResource(Resource):
             query = '''select u.id,
                             u.email as userEmail,
                             u.nickname as userNickname,
-                            u.birth as userBirth,
                             u.gender as userGender,
-                            r.address as userAddress,
+                            u.birth as userBirth,
+                            u.proImgUrl as userImgUrl,
                             u.oneliner as userOneliner,
-                            u.auth as userAuth,
-                            u.proImgUrl as userProUrl,
                             u.loginType as userLoginType,
-                            p.id as petId,
-                            p.petName as petName,
-                            p.petAge as petAge,
-                            p.petGender as petGender,
-                            p.oneliner as petOneliner,
-                            p.petProUrl as petProUrl
+                            u.kakaoId as userKakaoId,
+                            r.address as userAddress
                     from user u
-                    join pets p
-                        on u.id = p.userId
                     join region r
                         on u.id = r.userId
                     where u.id = %s;'''
@@ -48,9 +44,9 @@ class MyProfileResource(Resource):
             cursor = connection.cursor(dictionary=True)
             cursor.execute(query, record)
 
-            result_list = cursor.fetchall()
+            result = cursor.fetchall()
 
-            print(result_list)
+            print(result)
 
             cursor.close()
             connection.close()
@@ -61,13 +57,120 @@ class MyProfileResource(Resource):
             return{'result':'fail','error':str(e)}, 400
         
         i = 0
-        for row in result_list:
-            result_list[i]['userBirth'] = row['userBirth'].isoformat()
+        for row in result:
+            result[i]['userBirth'] = row['userBirth'].isoformat()
             i = i + 1
         
         return {'result' : 'success',
-                'count' : len(result_list),
-                'items' : result_list}
+                'info':result}
+    
+    # 내 정보 수정
+    @jwt_required()
+    def put(self):
+
+        user_id = get_jwt_identity()
+        
+
+        if 'nickname' not in request.form:
+            return {'result' : 'fail', 'error' : '닉네임을 입력하세요.'},400
+        
+        nickname = request.form['nickname']
+
+        if 'address' not in request.form:
+            return {'resilt' : 'fail', 'error' : '주소를 입력하세요.'}, 400
+
+        address = request.form['address']
+        lat = request.form['lat']
+        lng = request.form['lng']
+
+        oneliner = request.form['oneliner']
+
+        if 'photo' in request.files : # 사진이 있을 경우
+
+            file = request.files['photo']
+            
+
+            if file :
+            # 2. 사진부터 S3에 저장한다.
+                current_time = datetime.now()
+
+                # 문자열로 가공
+                # if file:
+                new_filename = current_time.isoformat().replace(':','_').replace('.','_') + '_' + str(user_id) + '.jpg'
+
+                try:
+                    s3 = boto3.client('s3',
+                                    aws_access_key_id = Config.AWS_ACCESS_KEY_ID,
+                                    aws_secret_access_key = Config.AWS_SECRET_ACCESS_KEY)
+                    
+                    s3.upload_fileobj(file,
+                                    Config.S3_BUCKET,
+                                    new_filename,
+                                    ExtraArgs = {'ACL':'public-read',
+                                                'ContentType':'image/jpeg'})
+                except Exception as e:
+                    print(e)
+                    return {'result':'fail','error':str(e)}, 400
+                userProUrl = Config.S3_BASE_URL + new_filename
+            else:
+                userProUrl = None
+
+            try:
+                connection = get_connection()
+                query1 = '''update user
+                            set nickname = %s,proImgUrl = %s,oneliner = %s
+                            where id = %s;'''
+                record1 = (nickname,userProUrl,oneliner,user_id)
+                cursor = connection.cursor()
+                cursor.execute(query1,record1)
+
+                query2 = '''update region
+                            set address = %s,lat = %s,lng = %s
+                            where userId = %s;'''
+                record2 = (address,lat,lng,user_id)
+                cursor = connection.cursor()
+                cursor.execute(query2,record2)
+
+                connection.commit()
+
+                cursor.close()
+                connection.close()
+
+                return {'result':'success'}
+
+            except Exception as e:
+                print(e)
+                return {'result':'fail','error':str(e)}, 400
+        
+        # 사진이 없을 경우
+        else: 
+            try:
+                connection = get_connection()
+                query1 = '''update user
+                            set nickname = %s,oneliner = %s
+                            where id = %s;'''
+                record1 = (nickname,oneliner,user_id)
+                cursor = connection.cursor()
+                cursor.execute(query1,record1)
+
+                query2 = '''update region
+                            set address = %s,lat = %s,lng = %s
+                            where userId = %s;'''
+                record2 = (address,lat,lng,user_id)
+                cursor = connection.cursor()
+                cursor.execute(query2,record2)
+
+                connection.commit()
+
+                cursor.close()
+                connection.close()
+
+                return {'result':'success'}
+            
+            except Exception as e:
+                print(e)
+                return{'result':'fail','error':str(e)}, 400
+
 
 
 
