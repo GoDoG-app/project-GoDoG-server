@@ -169,10 +169,10 @@ class UserRegisterResource(Resource) :
         # 통과했으면 DB에 저장한다.
 
         query1 = '''insert into user
-                (email, password, nickname, gender, birth)
+                (email, password, nickname, gender, birth, loginType)
                 values
-                (%s,%s,%s,%s,%s);'''
-        record1 = (data['email'], hashed_password, data['nickname'], data['gender'], data['birth'])
+                (%s,%s,%s,%s,%s,%s);'''
+        record1 = (data['email'], hashed_password, data['nickname'], data['gender'], data['birth'], data['loginType'])
 
 
         cursor = connection.cursor()
