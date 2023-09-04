@@ -10,6 +10,44 @@ from mysql_connection import get_connection
 
 import boto3
 
+
+
+# 특정 유저 펫 정보
+class UserPetInfoResource(Resource):
+
+    def get(self,user_id):
+
+        try :
+            connection = get_connection()
+            query = '''select *
+                    from pets
+                    where userId = %s;'''
+            record = (user_id,)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            print(result_list)
+
+            cursor.close()
+            connection.close()
+
+        except Exception as e:
+            print(e)
+            return {'result':'fail','error':str(e)}, 400
+
+        i = 0
+        for row in result_list:
+            
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+            i = i + 1
+        
+        return {'result' : 'success',
+                'items' : result_list}
+
+
 # 펫 등록
 class PetRegisterResource(Resource):
 
