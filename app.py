@@ -3,7 +3,7 @@ from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
 from resources.follow import FollowListResource, FollowResource
-from resources.pet import MyPetListResource, PetRegisterResource, PetResource
+from resources.pet import MyPetInfoResource, PetRegisterResource, PetResource
 from resources.postLike import PostingLikeResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.randomFriend import RandomFriendResource
@@ -30,10 +30,12 @@ api.add_resource( UserLoginResource , '/user/login' )
 api.add_resource( UserLogoutResource , '/user/logout')
 api.add_resource( UserKakaoLoginResource , '/user/kakaologin')
 
+api.add_resource( MyProfileResource ,"/user/profile") # 내 정보, 수정
 
 api.add_resource( PetRegisterResource, '/pet/register') # 펫 등록
-api.add_resource( PetResource , "/pet/<int:pets_id>" ) # 펫 정보변경,삭제
-api.add_resource( MyPetListResource , "/pet/mylist") # 내가 등록한 펫
+api.add_resource( PetResource , "/pet/edit" ) # 펫 정보변경,삭제
+api.add_resource( MyPetInfoResource , "/pet/info") # 내가 등록한 펫
+
 
 api.add_resource( PostingListResource , "/posting") # 게시물 작성
 api.add_resource( PostingResource , '/posting/<int:posting_id>') # 게시물 수정,삭제
@@ -51,7 +53,6 @@ api.add_resource( RandomFriendResource, "/randomfriend/list") # 랜덤친구 추
 
 api.add_resource( TMapRouteResource, "/route") # tmap 보행자경로 api
 
-api.add_resource( MyProfileResource ,"/user/profile") # 내 정보, 수정
 
 if __name__ == '__main__':
     app.run()
