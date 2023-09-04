@@ -8,7 +8,7 @@ from resources.postLike import PostingLikeResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.randomFriend import RandomFriendResource
 from resources.tmap import TMapRouteResource
-from resources.user import MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
+from resources.user import UserKakaoLoginResource, MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
 
 app = Flask(__name__)
 
@@ -28,6 +28,7 @@ api = Api(app)
 api.add_resource( UserRegisterResource , '/user/register') 
 api.add_resource( UserLoginResource , '/user/login' )
 api.add_resource( UserLogoutResource , '/user/logout')
+api.add_resource( UserKakaoLoginResource , '/user/kakaologin')
 
 
 api.add_resource( PetRegisterResource, '/pet/register') # 펫 등록

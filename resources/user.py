@@ -253,3 +253,68 @@ class UserLoginResource(Resource) :
 
 
         return {'result' : 'success', 'access_token':access_token}
+    
+class UserKakaoLoginResource(Resource):
+    def post(self):
+        
+        data = request.get_json()
+        
+        check_list = ['kakaoId', 'email', 'nickname', 'loginType']
+        for check in check_list:
+            if check not in data:
+                return {
+                    'result' : 'fail',
+                    'error' : '필수 항목을 확인하세요.'
+                }, 400
+        
+        try:
+            connection = get_connection()
+            
+            query = '''
+                select *
+                from user
+                where loginType = 1
+                    and kakoId = %s
+                    and email = %s
+                    and nickname = %s;
+            '''
+            record = (data['kakaoId'], data['email'], data['nickname'])
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+            result = cursor.fetchone()
+            
+            if result == None:
+                
+                query = '''
+                    insert into user
+                    (email, nickname, loginTpye, kakaoId)
+                    values
+                    (%s, %s, 1, %s);
+                '''
+                record = (data['email'], data['nickname'], data['loginType'], data['kakaoId'])
+                cursor = connection.cursor()
+                cursor.execute(query, record)
+                
+                result = {
+                    'id' : cursor.lastrowid
+                }         
+                
+                connection.commit()
+                
+            
+            cursor.close()
+            connection.close()
+            
+            
+        except Error as e:
+            return {
+                'result' : 'fail',
+                'error' : str(e)
+            }, 500
+            
+        accessToken = create_access_token(result['id'])
+        
+        return {
+            'result' : 'success',
+            'accessToken' : accessToken
+        }
