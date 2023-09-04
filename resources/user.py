@@ -377,7 +377,7 @@ class UserKakaoLoginResource(Resource):
                 select *
                 from user
                 where loginType = 1
-                    and kakoId = %s
+                    and kakaoId = %s
                     and email = %s
                     and nickname = %s;
             '''
@@ -390,11 +390,11 @@ class UserKakaoLoginResource(Resource):
                 
                 query = '''
                     insert into user
-                    (email, nickname, loginTpye, kakaoId)
+                    (email, nickname, loginType, kakaoId)
                     values
                     (%s, %s, 1, %s);
                 '''
-                record = (data['email'], data['nickname'], data['loginType'], data['kakaoId'])
+                record = (data['email'], data['nickname'], data['kakaoId'])
                 cursor = connection.cursor()
                 cursor.execute(query, record)
                 
