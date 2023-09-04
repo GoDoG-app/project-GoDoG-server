@@ -3,12 +3,12 @@ from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
 from resources.follow import FollowListResource, FollowResource
-from resources.pet import MyPetInfoResource, PetRegisterResource, PetResource
+from resources.pet import MyPetInfoResource, PetRegisterResource, PetResource, UserPetInfoResource
 from resources.postLike import PostingLikeResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
 from resources.randomFriend import RandomFriendResource
 from resources.tmap import TMapRouteResource
-from resources.user import UserKakaoLoginResource, MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
+from resources.user import UserInfoResource, UserKakaoLoginResource, MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, jwt_blocklist
 
 app = Flask(__name__)
 
@@ -35,6 +35,9 @@ api.add_resource( MyProfileResource ,"/user/profile") # 내 정보, 수정
 api.add_resource( PetRegisterResource, '/pet/register') # 펫 등록
 api.add_resource( PetResource , "/pet/edit" ) # 펫 정보변경,삭제
 api.add_resource( MyPetInfoResource , "/pet/info") # 내가 등록한 펫
+
+api.add_resource( UserInfoResource ,"/user/<int:user_id>") # 특정 유저 정보
+api.add_resource( UserPetInfoResource ,"/userpet/<int:user_id>") # 특정 유저 펫 정보
 
 
 api.add_resource( PostingListResource , "/posting") # 게시물 작성

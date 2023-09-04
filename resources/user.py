@@ -14,6 +14,56 @@ from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, j
 
 import boto3
 
+
+
+# 특정 유저 정보
+class UserInfoResource(Resource):
+
+    def get(self,user_id):
+
+        try:
+            connection = get_connection()
+            query = '''select u.id,
+                            u.email as userEmail,
+                            u.nickname as userNickname,
+                            u.gender as userGender,
+                            u.birth as userBirth,
+                            u.proImgUrl as userImgUrl,
+                            u.oneliner as userOneliner,
+                            u.loginType as userLoginType,
+                            u.kakaoId as userKakaoId,
+                            r.address as userAddress
+                    from user u
+                    join region r
+                        on u.id = r.userId
+                    where u.id = %s;'''
+            record = (user_id,)
+
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result = cursor.fetchall()
+
+            print(result)
+
+            cursor.close()
+            connection.close()
+
+
+        except Exception as e:
+            print(e)
+            return{'result':'fail','error':str(e)}, 400
+        
+        i = 0
+        for row in result:
+            result[i]['userBirth'] = row['userBirth'].isoformat()
+            i = i + 1
+        
+        return {'result' : 'success',
+                'info':result}
+
+
+
 # 내 정보, 수정
 class MyProfileResource(Resource):
 
