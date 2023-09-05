@@ -1,5 +1,3 @@
-org: jjni58
-app: project-walking-app
 service: project-walking-app
 
 frameworkVersion: '3'
@@ -11,6 +9,8 @@ custom:
 provider:
   name: aws
   runtime: python3.10
+  region: ap-northeast-2
+  timeout: 70
 
 functions:
   api:

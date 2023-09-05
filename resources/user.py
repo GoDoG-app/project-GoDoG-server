@@ -437,6 +437,7 @@ class UserKakaoLoginResource(Resource):
             result = cursor.fetchone()
             
             if result == None:
+                print(result)
                 
                 query = '''
                     insert into user
@@ -458,16 +459,17 @@ class UserKakaoLoginResource(Resource):
             cursor.close()
             connection.close()
             
-            
+            print(result['id'])
         except Error as e:
             return {
                 'result' : 'fail',
                 'error' : str(e)
             }, 500
-            
-        accessToken = create_access_token(result['id'])
+        
+                    
+        access_token = create_access_token(result['id'])
         
         return {
             'result' : 'success',
-            'accessToken' : accessToken
+            'access_token' : access_token
         }
