@@ -314,9 +314,9 @@ class UserKakaoLoginResource(Resource):
             }, 500
         
                     
-        accessToken = create_access_token(result['id'])
+        access_token = create_access_token(result['id'])
         
         return {
             'result' : 'success',
-            'accessToken' : accessToken
+            'access_token' : access_token
         }
