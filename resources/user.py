@@ -32,7 +32,9 @@ class UserInfoResource(Resource):
                             u.oneliner as userOneliner,
                             u.loginType as userLoginType,
                             u.kakaoId as userKakaoId,
-                            r.address as userAddress
+                            r.address as userAddress,
+                            r.lat,
+                            r.lng
                     from user u
                     join region r
                         on u.id = r.userId
@@ -84,7 +86,9 @@ class MyProfileResource(Resource):
                             u.oneliner as userOneliner,
                             u.loginType as userLoginType,
                             u.kakaoId as userKakaoId,
-                            r.address as userAddress
+                            r.address as userAddress,
+                            r.lat,
+                            r.lng
                     from user u
                     join region r
                         on u.id = r.userId
