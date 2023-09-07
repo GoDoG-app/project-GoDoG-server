@@ -66,7 +66,7 @@ class RandomFriendResource(Resource):
                         LIMIT '''+offset+''', '''+limit+''';'''
 
             record = (random_latitude, random_longitude, random_latitude, user_id )
-            cursor = connection.cursor()
+            cursor = connection.cursor(dictionary=True)
             cursor.execute(query, record)
             result_list = cursor.fetchall()
             print(result_list)
