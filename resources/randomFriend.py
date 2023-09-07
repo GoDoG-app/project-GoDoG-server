@@ -74,7 +74,7 @@ class RandomFriendResource(Resource):
             cursor.close()
             connection.close()
 
-            result = {"result": "success", "conunt":len(result_list),"data":result_list }
+            result = {"result": "success", "conunt":len(result_list),"items":result_list }
             return result, 200
 
         except Exception as e:
