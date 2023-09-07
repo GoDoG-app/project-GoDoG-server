@@ -174,6 +174,7 @@ class PostingAllListResource(Resource) :
     def get(self):
         
         user_id = get_jwt_identity()
+
         offset = request.args.get('offset')
         limit = request.args.get('limit')
 
@@ -197,7 +198,7 @@ class PostingAllListResource(Resource) :
                         posting p
                     JOIN
                         user u ON p.userId = u.id
-                    JOIN
+                    left JOIN
                         region r ON u.id = r.userId
                     left join postLikes pl
                         on pl.userId = %s and p.id = pl.postId
@@ -262,7 +263,7 @@ class PostingCategoryListResource(Resource):
                         posting p
                     JOIN
                         user u ON p.userId = u.id
-                    JOIN
+                    left JOIN
                         region r ON u.id = r.userId
                     left join postLikes pl
                         on pl.userId = %s and p.id = pl.postId
@@ -328,7 +329,7 @@ class UserPostListResource(Resource):
                         posting p
                     JOIN
                         user u ON p.userId = u.id
-                    JOIN
+                    left JOIN
                         region r ON u.id = r.userId
                     left join postLikes pl
                         on pl.userId = %s and p.id = pl.postId
@@ -394,7 +395,7 @@ class MyPostListResource(Resource):
                         posting p
                     JOIN
                         user u ON p.userId = u.id
-                    JOIN
+                    left JOIN
                         region r ON u.id = r.userId
                     left join postLikes pl
                         on pl.userId = %s and p.id = pl.postId

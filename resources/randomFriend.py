@@ -57,7 +57,7 @@ class RandomFriendResource(Resource):
                             (6371 * acos(cos(radians(r.lat)) * cos(radians(%s)) * cos(radians(%s) - radians(r.lng)) +
                             sin(radians(r.lat)) * sin(radians(%s)))) AS distance
                         FROM user u
-                        JOIN region r
+                        left JOIN region r
                         ON u.id = r.userId
                         WHERE u.id != %s
                         ORDER BY distance

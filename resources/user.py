@@ -36,7 +36,7 @@ class UserInfoResource(Resource):
                             r.lat,
                             r.lng
                     from user u
-                    join region r
+                    left join region r
                         on u.id = r.userId
                     where u.id = %s;'''
             record = (user_id,)
@@ -90,7 +90,7 @@ class MyProfileResource(Resource):
                             r.lat,
                             r.lng
                     from user u
-                    join region r
+                    left join region r
                         on u.id = r.userId
                     where u.id = %s;'''
             record = (user_id,)
@@ -416,7 +416,7 @@ class UserKakaoLoginResource(Resource):
         
         data = request.get_json()
         
-        check_list = ['kakaoId', 'email', 'nickname', 'loginType']
+        check_list = ['kakaoId', 'nickname']
         for check in check_list:
             if check not in data:
                 return {
@@ -430,16 +430,14 @@ class UserKakaoLoginResource(Resource):
             query = '''
                 select *
                 from user
-                where loginType = 1
-                    and kakaoId = %s
-                    and email = %s
+                where kakaoId = %s
                     and nickname = %s;
             '''
-            record = (data['kakaoId'], data['email'], data['nickname'])
+            record = (data['kakaoId'], data['nickname'])
             cursor = connection.cursor(dictionary=True)
             cursor.execute(query, record)
             result = cursor.fetchone()
-            
+            print(result)
             if result == None:
                 print(result)
                 
@@ -463,7 +461,6 @@ class UserKakaoLoginResource(Resource):
             cursor.close()
             connection.close()
             
-            print(result['id'])
         except Error as e:
             return {
                 'result' : 'fail',
@@ -472,7 +469,7 @@ class UserKakaoLoginResource(Resource):
         
                     
         access_token = create_access_token(result['id'])
-        
+        print(access_token)
         return {
             'result' : 'success',
             'access_token' : access_token
