@@ -191,7 +191,8 @@ class PostingAllListResource(Resource) :
                         pc.categoryName as category,
                         (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
                         p.createdAt,
-                        p.updatedAt
+                        p.updatedAt,
+                        u.id
                     FROM
                         posting p
                     JOIN
@@ -255,7 +256,8 @@ class PostingCategoryListResource(Resource):
                         pc.categoryName as category,
                         (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
                         p.createdAt,
-                        p.updatedAt
+                        p.updatedAt,
+                        u.id
                     FROM
                         posting p
                     JOIN
@@ -320,7 +322,8 @@ class UserPostListResource(Resource):
                         pc.categoryName as category,
                         (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
                         p.createdAt,
-                        p.updatedAt
+                        p.updatedAt,
+                        u.id
                     FROM
                         posting p
                     JOIN
@@ -385,7 +388,8 @@ class MyPostListResource(Resource):
                         pc.categoryName as category,
                         (SELECT COUNT(*) FROM postLikes pl WHERE pl.postId = p.id) AS post_likes_count,
                         p.createdAt,
-                        p.updatedAt
+                        p.updatedAt,
+                        u.id
                     FROM
                         posting p
                     JOIN
