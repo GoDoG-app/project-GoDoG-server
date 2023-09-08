@@ -17,7 +17,7 @@ class FollowListResource(Resource):
         try:
             
             connection = get_connection()
-            query = '''select f.id,f.followerId,f.followeeId, u.nickname,u.proImgUrl
+            query = '''select f.id,f.followerId,f.followeeId, u.nickname,u.proImgUrl,u.oneliner
                         from follow f
                         join user u
                         on u.id = f.followeeId
