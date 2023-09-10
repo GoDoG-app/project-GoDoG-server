@@ -426,51 +426,45 @@ class UserKakaoLoginResource(Resource):
         
         try:
             connection = get_connection()
-            
-            query = '''
-                select *
-                from user
-                where kakaoId = %s
-                    and nickname = %s;
+                        # 이메일이 이미 존재하는지 확인
+            email_query = '''
+                SELECT * FROM user WHERE email = %s;
             '''
-            record = (data['kakaoId'], data['nickname'])
-            cursor = connection.cursor(dictionary=True)
-            cursor.execute(query, record)
-            result = cursor.fetchone()
-            print(result)
-            if result == None:
-                print(result)
-                
-                query = '''
-                    insert into user
+            email_record = (data['email'],)
+            email_cursor = connection.cursor(dictionary=True)
+            email_cursor.execute(email_query, email_record)
+            existing_email = email_cursor.fetchone()
+
+            if existing_email:
+                # 이미 이메일이 존재하면 삽입하지 않고 기존 ID로 토큰 생성
+                user_id = existing_email['id']
+            else:
+                # 이메일이 존재하지 않으면 새 레코드 삽입 후 ID를 가져옴
+                insert_query = '''
+                    INSERT INTO user
                     (email, nickname, loginType, kakaoId)
-                    values
+                    VALUES
                     (%s, %s, 1, %s);
-                '''
-                record = (data['email'], data['nickname'], data['kakaoId'])
-                cursor = connection.cursor()
-                cursor.execute(query, record)
-                
-                result = {
-                    'id' : cursor.lastrowid
-                }         
-                
+                    '''
+                insert_record = (data['email'], data['nickname'], data['kakaoId'])
+                insert_cursor = connection.cursor()
+                insert_cursor.execute(insert_query, insert_record)
+                user_id = insert_cursor.lastrowid
                 connection.commit()
-                
+                insert_cursor.close()
             
-            cursor.close()
+            email_cursor.close()
             connection.close()
             
-        except Error as e:
+        except Exception as e:
             return {
-                'result' : 'fail',
-                'error' : str(e)
+                'result': 'fail',
+                'error': str(e)
             }, 500
         
-                    
-        access_token = create_access_token(result['id'])
-        print(access_token)
+        # 액세스 토큰 생성 및 반환
+        access_token = create_access_token(user_id)
         return {
-            'result' : 'success',
-            'access_token' : access_token
+            'result': 'success',
+            'access_token': access_token
         }
