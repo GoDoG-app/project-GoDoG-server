@@ -1,4 +1,5 @@
-from flask import Response
+import json
+from flask import Response, jsonify
 from flask_restful import Resource
 import requests
 
@@ -48,14 +49,33 @@ class TMapRouteResource(Resource):
         }        
 
         response = requests.post(url, json=payload, headers=headers)
-        print(response.text)
 
+        if response.status_code == 200:
+            # API 응답을 JSON 형식으로 파싱
+            response_text_cleaned = response.text.replace('\x00', '')  # 유효하지 않은 문자를 빈 문자열로 대체
 
+            try:
+                data = json.loads(response_text_cleaned)
+            except json.JSONDecodeError as e:
+                return jsonify({'error': 'JSON 디코드 오류 발생', 'message': str(e)})
 
-        # json 응답 1번
-        response = response.json()
-        return {"relsut" : "success",
-                "items" : response}
+            # distance, time 및 coordinates 정보 추출
+            route_info = []
+            for feature in data['features']:
+                if feature['geometry']['type'] == 'LineString':
+                    distance = feature['properties']['distance']
+                    time = feature['properties']['time']
+                    coordinates = feature['geometry']['coordinates']
+                    route_info.append({
+                        'distance': distance,
+                        'time': time,
+                        'coordinates': coordinates
+                    })
+
+            # JSON 응답으로 반환
+            return jsonify(route_info)
+        else:
+            return jsonify({'error': 'API 요청 실패'})
         
         # # json 응답 2번
         # if response.status_code == 200:
