@@ -15,6 +15,46 @@ from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, j
 import boto3
 
 
+class UserSearchResource(Resource):
+
+    def get(self):
+
+        name = request.args.get('name')
+
+        try:
+            
+            connection = get_connection()
+            query = '''select *
+                    from user
+                    where nickname like '%'''+name+'''%';'''
+            record = ()
+
+            cursor = connection.cursor(dictionary=True)
+
+            cursor.execute(query,record)
+
+            result_list = cursor.fetchall()
+
+            cursor.close()
+            connection.close()
+            
+
+        except Exception as e:
+            print(e)
+            return{'result':'fail','error':str(e)}, 400
+        
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
+            result_list[i]['birth'] = row['birth'].isoformat()
+            i = i + 1
+
+        return {'result':'success',
+                'count' : len(result_list),
+                'items' : result_list}
+
+
 
 # 특정 유저 정보
 class UserInfoResource(Resource):
