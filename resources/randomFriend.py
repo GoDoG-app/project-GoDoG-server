@@ -49,12 +49,13 @@ class RandomFriendResource(Resource):
         try:
             connection = get_connection()
 
-            random_latitude, random_longitude = self.generate_random_coordinates(5.0)
+            random_latitude, random_longitude = self.generate_random_coordinates(2.0)
             print(random_latitude, random_longitude)
 
             query = '''SELECT * FROM (
                         SELECT u.id, r.lat, r.lng, u.proImgUrl, u.nickname,
-                            (6371 * acos(cos(radians(r.lat)) * cos(radians(%s)) * cos(radians(%s) - radians(r.lng)) +
+                            (6371 * acos(cos(radians(r.lat)) * cos(radians(%s))
+                             * cos(radians(%s) - radians(r.lng)) +
                             sin(radians(r.lat)) * sin(radians(%s)))) AS distance
                         FROM user u
                         left JOIN region r
