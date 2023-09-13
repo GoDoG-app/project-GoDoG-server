@@ -1,3 +1,5 @@
+from datetime import timedelta
+import json
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from flask import jsonify, request
@@ -35,3 +37,34 @@ class walkingListResource(Resource):
             return{'result':'fail','error':str(e)}, 400
         
         return {'result':'success'}
+
+class getWalkingListResource(Resource):
+    @jwt_required()
+    def get(self):
+        user_id = get_jwt_identity()
+
+        try:
+            connection = get_connection()
+            query = '''SELECT userId, petsId, distance, time, createdAt
+                    FROM walkingList
+                    WHERE userId = %s;'''
+            record = (user_id,)
+
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            cursor.close()
+            connection.close()
+
+        except Exception as e:
+            print(e)
+            return {'result': 'fail', 'error': str(e)}, 400
+
+        # timedelta 객체를 직렬화할 필요 없이, 더 간단하게 데이터를 가공합니다.
+        for row in result_list:
+            row['createdAt'] = row['createdAt'].isoformat()
+            row['time'] = row['time'].total_seconds()
+            
+        return jsonify({'result': 'success', 'count': len(result_list), 'items': result_list})
