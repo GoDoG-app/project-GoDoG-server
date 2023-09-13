@@ -49,7 +49,7 @@ class RandomFriendResource(Resource):
         try:
             connection = get_connection()
 
-            random_latitude, random_longitude = self.generate_random_coordinates(2.0)
+            random_latitude, random_longitude = self.generate_random_coordinates(5.0)
             print(random_latitude, random_longitude)
 
             query = '''SELECT * FROM (

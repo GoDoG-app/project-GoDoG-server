@@ -9,6 +9,7 @@ from resources.posting import MyPostListResource, PostingAllListResource, Postin
 from resources.randomFriend import RandomFriendResource
 from resources.tmap import TMapRouteResource
 from resources.user import UserInfoResource, UserKakaoLoginResource, MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, UserSearchResource, jwt_blocklist
+from resources.walking import walkingListResource
 
 app = Flask(__name__)
 
@@ -57,6 +58,8 @@ api.add_resource( RandomFriendResource, "/randomfriend/list") # 랜덤친구 추
 api.add_resource( TMapRouteResource, "/route") # tmap 보행자경로 api
 
 api.add_resource( UserSearchResource , "/search") # 유저 검색
+
+api.add_resource( walkingListResource , "/walkinglist") # 산책기록
 
 if __name__ == '__main__':
     app.run()

@@ -33,6 +33,9 @@ class UserPetInfoResource(Resource):
             cursor.close()
             connection.close()
 
+            
+
+
         except Exception as e:
             print(e)
             return {'result':'fail','error':str(e)}, 400
@@ -43,6 +46,9 @@ class UserPetInfoResource(Resource):
             result_list[i]['createdAt'] = row['createdAt'].isoformat()
             result_list[i]['updatedAt'] = row['updatedAt'].isoformat()
             i = i + 1
+
+        if result_list == [] :
+            return {'result' : 'fail', "error" : "유저가 없습니다."}, 400
         
         return {'result' : 'success',
                 'items' : result_list}

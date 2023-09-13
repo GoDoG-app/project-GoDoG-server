@@ -100,6 +100,8 @@ class UserInfoResource(Resource):
         for row in result:
             result[i]['userBirth'] = row['userBirth'].isoformat()
             i = i + 1
+        if result == [] :
+            return {'result' : 'fail', "error" : "유저가 없습니다."}, 400
         
         return {'result' : 'success',
                 'info':result}
