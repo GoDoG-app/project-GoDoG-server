@@ -65,6 +65,6 @@ class getWalkingListResource(Resource):
         # timedelta 객체를 직렬화할 필요 없이, 더 간단하게 데이터를 가공합니다.
         for row in result_list:
             row['createdAt'] = row['createdAt'].isoformat()
-            row['time'] = row['time'].total_seconds()
+
             
         return jsonify({'result': 'success', 'count': len(result_list), 'items': result_list})
