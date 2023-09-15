@@ -1,5 +1,5 @@
 # 반려가족과의 행복한 순간, GoDoG 🐕
-<img src="https://github.com/kje0058/project-walk-app-android/assets/130967356/08e98596-dd91-4ad8-927f-f099d00e35a7">
+<img src="https://user-images.githubusercontent.com/130967356/268191180-f1f1e9cd-2379-4126-9341-922151bbe83b.png">
 
 <div align=center>
   <h2>사용한 개발 Tool💻</h2>  
