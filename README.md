@@ -51,3 +51,6 @@
 
 <h2>📌 서버 아키텍처</h2>
 
+<img src = "https://github.com/GoDoG-app/project-GoDoG-server/assets/130967356/4ee54f3f-8451-4f5c-8494-b6e2683a02fb">
+
+
