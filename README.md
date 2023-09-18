@@ -53,6 +53,10 @@
 
 <img src = "https://github.com/GoDoG-app/project-GoDoG-server/assets/130967356/4ee54f3f-8451-4f5c-8494-b6e2683a02fb">
 
+<h2> ERD</h2>
+
+<img width="709" alt="image" src="https://github.com/GoDoG-app/project-GoDoG-android/assets/130967340/156ee4ca-8b1c-4112-a5ff-11fdb6ed3ca5">
+
 <br>
 <h2>📱 프로젝트 시연 동영상</h2>
 
