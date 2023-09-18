@@ -51,7 +51,6 @@
 <h2>📌 서버 아키텍처</h2>
 
 <img src = "https://github.com/GoDoG-app/project-GoDoG-server/assets/130967356/4ee54f3f-8451-4f5c-8494-b6e2683a02fb">
-
 <br>
 
 <br>
@@ -61,7 +60,7 @@
 <br>
 
 <br>
-<h2> API</h2>
+<h2>📑 API</h2>
 
 ![GoDoG API2](https://github.com/GoDoG-app/project-GoDoG-android/assets/130967340/95914f78-f868-48da-bc4a-03f5bbd6950b)
 <br>
