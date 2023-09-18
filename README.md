@@ -48,14 +48,26 @@
 채팅, 커뮤니티로 기능으로 친구와 소통이 가능하고, TMap 보행자 경로 API를 사용하여 주변의 산책로를 추천해주는 기능으로 색다른 산책을 해볼 수 있습니다.
 
 <br>
-
 <h2>📌 서버 아키텍처</h2>
 
 <img src = "https://github.com/GoDoG-app/project-GoDoG-server/assets/130967356/4ee54f3f-8451-4f5c-8494-b6e2683a02fb">
+<br>
 
-<h2> ERD</h2>
+<br>
+<h2>📰 ERD</h2>
 
 <img width="709" alt="image" src="https://github.com/GoDoG-app/project-GoDoG-android/assets/130967340/156ee4ca-8b1c-4112-a5ff-11fdb6ed3ca5">
+<br>
+
+<br>
+<h2>📚 프로젝트 사용 기술</h2>
+
+- 파이썬 프레임워크인 Flask Rest API 개발 기능   
+- JWT(JSON Web Token)을 이용하여 회원가입/로그인 기능 구현 및 유저에게 Access Token 부여  
+- 이미지 데이터를 Amazon S3 버킷에 저장 기능  
+- Serverless 프레임워크를 이용하여 AWS IAM을 통해 발급받은 Access Key로 AWS lambda에 함수 배포 기능  
+-  math 라이브러리를 사용하여 사용자의 현재 위치를 기반으로 랜덤한 위도와 경도 생성  
+- Haversine 공식을 사용하여 두 지점사이의 거리를 구하는 Query문을 작성하고 주변 사용자를 검색하고 가까운 사용자를 추천하는 기능 
 
 <br>
 <h2>📱 프로젝트 시연 동영상</h2>
