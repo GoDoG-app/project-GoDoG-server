@@ -60,6 +60,12 @@
 <br>
 
 <br>
+<h2> API</h2>
+
+![GoDoG API2](https://github.com/GoDoG-app/project-GoDoG-android/assets/130967340/95914f78-f868-48da-bc4a-03f5bbd6950b)
+<br>
+
+<br>
 <h2>📚 프로젝트 백엔드 사용 기술</h2>
 
 - 파이썬 프레임워크인 Flask Rest API 개발 기능   
