@@ -53,4 +53,43 @@
 
 <img src = "https://github.com/GoDoG-app/project-GoDoG-server/assets/130967356/4ee54f3f-8451-4f5c-8494-b6e2683a02fb">
 
+<br>
+<h2>📱 프로젝트 시연 동영상</h2>
 
+https://drive.google.com/file/d/1ZpAn0eP5NPqrZfY4rBPOdqAR7lLDeX8q/view?resourcekey
+
+<br>
+<h2>🔥 에러사항</h2>
+<details>
+<summary>문제1. 워터풀 개발방식👆</summary>
+  
+- 백엔드에서 개발한 API를 중간에 한꺼번에 배포하다보니 어디서 에러가 발생한지 모르는 상황 발생
+- 대처: 애자일 개발방식으로 변경
+  
+  서버를 새로 만들어 API를 하나씩 테스트하고 배포하는 애자일 방식으로 개발을 진행하여 에러를 찾았고,
+  라이브러리를 설치할 때 자동 설치된 라이브러리의 버전 문제였고 버전을 낮춰 해결
+
+<img src="https://github.com/GoDoG-app/project-GoDoG-android/assets/130967356/a7d735f2-03f5-494c-86ab-fc7dbad73be3">
+</details>
+
+<details>
+<summary>문제2.  Git push, pull시 충돌에러👆</summary>
+
+- 팀원 두명이 같은 파일을 수정해서 동시에 git에 올려 충돌 발생
+- 대처 : Git push시 팀원간의 소통
+  
+  Git branch를 만들어 git pull, push 상황을 공유하고 충돌이 더이상 일어나지 않게 Slack에서 소통함
+  Git Gragh를 확인하여 git push 상황을 체크함
+
+<img src="https://github.com/GoDoG-app/project-GoDoG-android/assets/130967356/68cabf96-47c7-4b5d-b220-b15c71d692c3">
+</details>
+
+<br>
+<h2>👨‍💻 팀원</h2>
+
+|이름|깃허브|역할|
+|------|---|---|
+|김정은|https://github.com/kje0058|조장 / 친구 추천, 카카오 로그인 및Firebase 채팅 개발|
+|김예진|https://github.com/blue618020|조원 / 안드로이드 기능 개발|
+|최태욱|https://github.com/skdixodnr|조원 / 서버 기능 개발|
+|황덕우|https://github.com/the9world|조원 / TMap 지도 산책 개발|
