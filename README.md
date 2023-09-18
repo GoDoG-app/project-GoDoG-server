@@ -64,7 +64,8 @@
 
 - 파이썬 프레임워크인 Flask Rest API 개발 기능   
 - JWT(JSON Web Token)을 이용하여 회원가입/로그인 기능 구현 및 유저에게 Access Token 부여  
-- 이미지 데이터를 Amazon S3 버킷에 저장 기능  
+- 이미지 데이터를 AWS S3 버킷에 저장 기능
+- MySQL DB로 데이터 저장 관리
 - Serverless 프레임워크를 이용하여 AWS IAM을 통해 발급받은 Access Key로 AWS lambda에 함수 배포 기능  
 -  math 라이브러리를 사용하여 사용자의 현재 위치를 기반으로 랜덤한 위도와 경도 생성  
 - Haversine 공식을 사용하여 두 지점사이의 거리를 구하는 Query문을 작성하고 주변 사용자를 검색하고 가까운 사용자를 추천하는 기능 
