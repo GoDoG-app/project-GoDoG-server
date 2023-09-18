@@ -60,7 +60,7 @@
 <br>
 
 <br>
-<h2>📚 프로젝트 사용 기술</h2>
+<h2>📚 프로젝트 백엔드 사용 기술</h2>
 
 - 파이썬 프레임워크인 Flask Rest API 개발 기능   
 - JWT(JSON Web Token)을 이용하여 회원가입/로그인 기능 구현 및 유저에게 Access Token 부여  
