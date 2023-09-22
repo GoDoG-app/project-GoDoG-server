@@ -120,20 +120,20 @@ class PromiseListResource(Resource):
             
             connection = get_connection()
             query = '''select p.id,
-                                p.userId,
-                                u1.nickname as userNickanme,
-                                p.friendId,
-                                u2.nickname as friendNickname,
-                                p.meetingPlace,
-                                p.meetingDay,
-                                p.meetingTime
-                        from promise p
-                        join user u1
-                            on p.userId = u1.id
-                        join user u2
-                            on p.friendId = u2.id
-                        where p.userId = %s or p.friendId = %s
-                        order by p.meetingDay,p.meetingTime;'''
+                            p.userId,
+                            u1.proImgUrl as userproImgUrl,
+                            p.friendId,
+                            u2.proImgUrl as friendproImgUrl,
+                            p.meetingPlace,
+                            p.meetingDay,
+                            p.meetingTime
+                    from promise p
+                    join user u1
+                        on p.userId = u1.id
+                    join user u2
+                        on p.friendId = u2.id
+                    where p.userId = %s or p.friendId = %s
+                    order by p.meetingDay,p.meetingTime;'''
             record = (user_id,user_id,)
 
             cursor = connection.cursor(dictionary=True)
