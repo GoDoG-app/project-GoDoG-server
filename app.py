@@ -6,7 +6,7 @@ from resources.follow import FollowListResource, FollowResource
 from resources.pet import MyPetInfoResource, PetRegisterResource, PetResource, UserPetInfoResource
 from resources.postLike import PostingLikeResource
 from resources.posting import MyPostListResource, PostingAllListResource, PostingCategoryListResource, PostingListResource, PostingResource, UserPostListResource
-from resources.promise import PromiseResource
+from resources.promise import PromiseCreateResource, PromiseListResource, PromiseResource
 from resources.randomFriend import RandomFriendResource
 from resources.tmap import TMapRouteResource
 from resources.user import UserInfoResource, UserKakaoLoginResource, MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, UserSearchResource, jwt_blocklist
@@ -64,7 +64,9 @@ api.add_resource( walkingListResource , "/walkinglist") # 산책기록
 
 api.add_resource( getWalkingListResource, "/walkinglist/my") # 내 산책기록 api
 
-api.add_resource( PromiseResource ,"/promise/<int:friend_id>") # 약속 api
+api.add_resource( PromiseCreateResource ,"/promise/<int:friend_id>") # 약속 생성
+api.add_resource( PromiseListResource ,"/promiselist") # 내 모든 약속 목록
+api.add_resource( PromiseResource ,"/promise/<int:promise_id>") # 약속 수정,삭제
 
 if __name__ == '__main__':
     app.run()
