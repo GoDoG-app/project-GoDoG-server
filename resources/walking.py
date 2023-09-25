@@ -8,6 +8,70 @@ from flask_restful import Resource
 
 from mysql_connection import get_connection
 
+
+# 산책 시작,중지
+class WalkingResource(Resource):
+
+    # 산책 시작
+    @jwt_required()
+    def post(self):
+
+        user_id = get_jwt_identity()
+
+        try:
+            
+            connection = get_connection()
+
+            query = '''insert into walkingFriends
+                        (userId)
+                        values
+                        (%s);'''
+            record = (user_id,)
+
+            cursor = connection.cursor()
+            cursor.execute(query,record)
+
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+        except Exception as e:
+            print(e)
+            return {'result':'fail','error':str(e)}, 400
+        
+        return {'result':'success'}
+    
+
+    # 산책 종료
+    @jwt_required()
+    def delete(self):
+
+        user_id = get_jwt_identity()
+
+        try:
+            
+            connection = get_connection()
+
+            query = '''delete from walkingFriends
+                        where userId = %s;'''
+            record = (user_id,)
+
+            cursor = connection.cursor()
+            cursor.execute(query,record)
+
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+        except Exception as e:
+            print(e)
+            return {'result':'fail','error':str(e)}, 400
+        
+        return {'result':'success'}
+
+
 class walkingListResource(Resource):
     @jwt_required()
     def post(self):

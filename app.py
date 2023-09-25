@@ -10,7 +10,8 @@ from resources.promise import PromiseCreateResource, PromiseListResource, Promis
 from resources.randomFriend import RandomFriendResource
 from resources.tmap import TMapRouteResource
 from resources.user import UserInfoResource, UserKakaoLoginResource, MyProfileResource, UserRegisterResource, UserLoginResource, UserLogoutResource, UserSearchResource, jwt_blocklist
-from resources.walking import walkingListResource, getWalkingListResource
+from resources.walking import WalkingResource, walkingListResource, getWalkingListResource
+from resources.walkingFriends import WalkingFriendsResource
 
 app = Flask(__name__)
 
@@ -27,10 +28,10 @@ def check_if_token_is_revoked(jwt_header, jwt_payload) :
 api = Api(app)
 
 
-api.add_resource( UserRegisterResource , '/user/register') 
-api.add_resource( UserLoginResource , '/user/login' )
-api.add_resource( UserLogoutResource , '/user/logout')
-api.add_resource( UserKakaoLoginResource , '/user/kakaologin')
+api.add_resource( UserRegisterResource , '/user/register') # 회원가입
+api.add_resource( UserLoginResource , '/user/login' ) # 로그인
+api.add_resource( UserLogoutResource , '/user/logout') # 로그아웃
+api.add_resource( UserKakaoLoginResource , '/user/kakaologin') # 카카오 로그인
 
 api.add_resource( MyProfileResource ,"/user/profile") # 내 정보, 수정
 
@@ -67,6 +68,9 @@ api.add_resource( getWalkingListResource, "/walkinglist/my") # 내 산책기록 
 api.add_resource( PromiseCreateResource ,"/promise/<int:friend_id>") # 약속 생성
 api.add_resource( PromiseListResource ,"/promiselist") # 내 모든 약속 목록
 api.add_resource( PromiseResource ,"/promise/<int:promise_id>") # 약속 수정,삭제
+
+api.add_resource( WalkingResource ,"/walking") # 산책 시작,종료
+api.add_resource( WalkingFriendsResource ,"/walkingfriends") # 산책중인 친구
 
 if __name__ == '__main__':
     app.run()
