@@ -31,7 +31,7 @@ api = Api(app)
 api.add_resource( UserRegisterResource , '/user/register') # 회원가입
 api.add_resource( UserLoginResource , '/user/login' ) # 로그인
 api.add_resource( UserLogoutResource , '/user/logout') # 로그아웃
-api.add_resource( UserKakaoLoginResource , '/user/kakaologin') # 카카오 로그인
+api.add_resource( UserKakaoLoginResource , '/user/kakaologin') # 카카오 로그인 ()
 
 api.add_resource( MyProfileResource ,"/user/profile") # 내 정보, 수정
 
@@ -57,6 +57,7 @@ api.add_resource( FollowResource , '/follow/<int:followee_id>') # 친구맺기,�
 
 api.add_resource( RandomFriendResource, "/randomfriend/list") # 랜덤친구 추천
 
+# 추후 네비게이션 구현을 위한 보행자 경로 API
 api.add_resource( TMapRouteResource, "/route") # tmap 보행자경로 api
 
 api.add_resource( UserSearchResource , "/search") # 유저 검색
